@@ -596,6 +596,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "d3d12"
+version = "22.0.0"
+source = "git+https://github.com/sagudev/wgpu?branch=extern-impl-experiment#ff9d32ab6672da3dd89f89c55204c30c039752e2"
+dependencies = [
+ "bitflags 2.6.0",
+ "libloading",
+ "winapi",
+]
+
+[[package]]
 name = "devserver_lib"
 version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1310,6 +1320,26 @@ name = "naga"
 version = "22.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8bd5a652b6faf21496f2cfd88fc49989c8db0825d1f6746b1a71a6ede24a63ad"
+dependencies = [
+ "arrayvec",
+ "bit-set",
+ "bitflags 2.6.0",
+ "cfg_aliases 0.1.1",
+ "codespan-reporting",
+ "hexf-parse",
+ "indexmap 2.5.0",
+ "log",
+ "rustc-hash",
+ "spirv",
+ "termcolor",
+ "thiserror",
+ "unicode-xid",
+]
+
+[[package]]
+name = "naga"
+version = "22.1.0"
+source = "git+https://github.com/sagudev/wgpu?branch=extern-impl-experiment#ff9d32ab6672da3dd89f89c55204c30c039752e2"
 dependencies = [
  "arrayvec",
  "bit-set",
@@ -2506,7 +2536,7 @@ dependencies = [
  "thiserror",
  "vello_encoding",
  "vello_shaders",
- "wgpu",
+ "wgpu 22.1.0 (git+https://github.com/sagudev/wgpu?branch=extern-impl-experiment)",
  "wgpu-profiler",
 ]
 
@@ -2526,7 +2556,7 @@ name = "vello_shaders"
 version = "0.2.0"
 dependencies = [
  "bytemuck",
- "naga",
+ "naga 22.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "thiserror",
  "vello_encoding",
 ]
@@ -2911,7 +2941,7 @@ dependencies = [
  "document-features",
  "js-sys",
  "log",
- "naga",
+ "naga 22.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "parking_lot",
  "profiling",
  "raw-window-handle",
@@ -2920,9 +2950,33 @@ dependencies = [
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "web-sys",
- "wgpu-core",
- "wgpu-hal",
- "wgpu-types",
+ "wgpu-core 22.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "wgpu-hal 22.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "wgpu-types 22.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "wgpu"
+version = "22.1.0"
+source = "git+https://github.com/sagudev/wgpu?branch=extern-impl-experiment#ff9d32ab6672da3dd89f89c55204c30c039752e2"
+dependencies = [
+ "arrayvec",
+ "cfg_aliases 0.1.1",
+ "document-features",
+ "js-sys",
+ "log",
+ "naga 22.1.0 (git+https://github.com/sagudev/wgpu?branch=extern-impl-experiment)",
+ "parking_lot",
+ "profiling",
+ "raw-window-handle",
+ "smallvec",
+ "static_assertions",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
+ "wgpu-core 22.1.0 (git+https://github.com/sagudev/wgpu?branch=extern-impl-experiment)",
+ "wgpu-hal 22.0.0 (git+https://github.com/sagudev/wgpu?branch=extern-impl-experiment)",
+ "wgpu-types 22.0.0 (git+https://github.com/sagudev/wgpu?branch=extern-impl-experiment)",
 ]
 
 [[package]]
@@ -2938,7 +2992,7 @@ dependencies = [
  "document-features",
  "indexmap 2.5.0",
  "log",
- "naga",
+ "naga 22.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "once_cell",
  "parking_lot",
  "profiling",
@@ -2946,8 +3000,32 @@ dependencies = [
  "rustc-hash",
  "smallvec",
  "thiserror",
- "wgpu-hal",
- "wgpu-types",
+ "wgpu-hal 22.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "wgpu-types 22.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "wgpu-core"
+version = "22.1.0"
+source = "git+https://github.com/sagudev/wgpu?branch=extern-impl-experiment#ff9d32ab6672da3dd89f89c55204c30c039752e2"
+dependencies = [
+ "arrayvec",
+ "bit-vec",
+ "bitflags 2.6.0",
+ "cfg_aliases 0.1.1",
+ "document-features",
+ "indexmap 2.5.0",
+ "log",
+ "naga 22.1.0 (git+https://github.com/sagudev/wgpu?branch=extern-impl-experiment)",
+ "once_cell",
+ "parking_lot",
+ "profiling",
+ "raw-window-handle",
+ "rustc-hash",
+ "smallvec",
+ "thiserror",
+ "wgpu-hal 22.0.0 (git+https://github.com/sagudev/wgpu?branch=extern-impl-experiment)",
+ "wgpu-types 22.0.0 (git+https://github.com/sagudev/wgpu?branch=extern-impl-experiment)",
 ]
 
 [[package]]
@@ -2964,7 +3042,7 @@ dependencies = [
  "block",
  "cfg_aliases 0.1.1",
  "core-graphics-types",
- "d3d12",
+ "d3d12 22.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "glow",
  "glutin_wgl_sys",
  "gpu-alloc",
@@ -2977,7 +3055,7 @@ dependencies = [
  "libloading",
  "log",
  "metal",
- "naga",
+ "naga 22.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "ndk-sys 0.5.0+25.2.9519653",
  "objc",
  "once_cell",
@@ -2991,7 +3069,51 @@ dependencies = [
  "thiserror",
  "wasm-bindgen",
  "web-sys",
- "wgpu-types",
+ "wgpu-types 22.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "winapi",
+]
+
+[[package]]
+name = "wgpu-hal"
+version = "22.0.0"
+source = "git+https://github.com/sagudev/wgpu?branch=extern-impl-experiment#ff9d32ab6672da3dd89f89c55204c30c039752e2"
+dependencies = [
+ "android_system_properties",
+ "arrayvec",
+ "ash",
+ "bit-set",
+ "bitflags 2.6.0",
+ "block",
+ "cfg_aliases 0.1.1",
+ "core-graphics-types",
+ "d3d12 22.0.0 (git+https://github.com/sagudev/wgpu?branch=extern-impl-experiment)",
+ "glow",
+ "glutin_wgl_sys",
+ "gpu-alloc",
+ "gpu-allocator",
+ "gpu-descriptor",
+ "hassle-rs",
+ "js-sys",
+ "khronos-egl",
+ "libc",
+ "libloading",
+ "log",
+ "metal",
+ "naga 22.1.0 (git+https://github.com/sagudev/wgpu?branch=extern-impl-experiment)",
+ "ndk-sys 0.5.0+25.2.9519653",
+ "objc",
+ "once_cell",
+ "parking_lot",
+ "profiling",
+ "range-alloc",
+ "raw-window-handle",
+ "renderdoc-sys",
+ "rustc-hash",
+ "smallvec",
+ "thiserror",
+ "wasm-bindgen",
+ "web-sys",
+ "wgpu-types 22.0.0 (git+https://github.com/sagudev/wgpu?branch=extern-impl-experiment)",
  "winapi",
 ]
 
@@ -3003,7 +3125,7 @@ checksum = "06b2cee91fdc885ff0d3d714c59810cc72c6d84b81b0eaa48bab8ff2ad54fb5b"
 dependencies = [
  "parking_lot",
  "thiserror",
- "wgpu",
+ "wgpu 22.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -3011,6 +3133,16 @@ name = "wgpu-types"
 version = "22.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bc9d91f0e2c4b51434dfa6db77846f2793149d8e73f800fa2e41f52b8eac3c5d"
+dependencies = [
+ "bitflags 2.6.0",
+ "js-sys",
+ "web-sys",
+]
+
+[[package]]
+name = "wgpu-types"
+version = "22.0.0"
+source = "git+https://github.com/sagudev/wgpu?branch=extern-impl-experiment#ff9d32ab6672da3dd89f89c55204c30c039752e2"
 dependencies = [
  "bitflags 2.6.0",
  "js-sys",
