@@ -38,6 +38,13 @@ impl RenderContext {
         }
     }
 
+    pub fn new_from_custom_instance(instance: Instance) -> Self {
+        Self {
+            instance,
+            devices: Vec::new(),
+        }
+    }
+
     /// Creates a new surface for the specified window and dimensions.
     pub async fn create_surface<'w>(
         &mut self,
