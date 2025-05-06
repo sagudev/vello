@@ -14,7 +14,7 @@ vello = { workspace = true }
 skrifa = { workspace = true }
 anyhow = { workspace = true }
 clap = { workspace = true, features = ["derive"] }
-image = { workspace = true, features = ["jpeg"] }
+image = { workspace = true, features = ["jpeg", "bmp"] }
 rand = { workspace = true, features = ["thread_rng"] }
 
 # for pico_svg

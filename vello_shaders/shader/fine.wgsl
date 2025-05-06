@@ -845,6 +845,20 @@ fn extend_mode(t: f32, mode: u32) -> f32 {
     }
 }
 
+fn extend_mode2(t: f32, mode: u32, max: f32) -> f32 {
+    switch mode {
+        case EXTEND_PAD: {
+            return clamp(t, 0.0, max);
+        }
+        case EXTEND_REPEAT: {
+            return t % max;
+        }
+        case EXTEND_REFLECT, default: {
+            return extend_mode(t / max, mode)*max;
+        }
+    }
+}
+
 const PIXELS_PER_THREAD = 4u;
 
 #ifndef msaa
@@ -1163,8 +1177,8 @@ fn main(
                             if area[i] != 0.0 {
                                 let my_xy = vec2(xy.x + f32(i), xy.y);
                                 var atlas_uv = image.matrx.xy * my_xy.x + image.matrx.zw * my_xy.y + image.xlat;
-                                atlas_uv.x = extend_mode(atlas_uv.x * extents_inv.x, image.x_extend_mode) * image.extents.x;
-                                atlas_uv.y = extend_mode(atlas_uv.y * extents_inv.y, image.y_extend_mode) * image.extents.y;
+                                atlas_uv.x = extend_mode2(atlas_uv.x, image.x_extend_mode, image.extents.x);
+                                atlas_uv.y = extend_mode2(atlas_uv.y, image.y_extend_mode, image.extents.y);
                                 atlas_uv = atlas_uv + image.atlas_offset;
                                 // TODO: If the image couldn't be added to the atlas (i.e. was too big), this isn't robust
                                 let atlas_uv_clamped = clamp(atlas_uv, image.atlas_offset, atlas_max);
@@ -1182,8 +1196,8 @@ fn main(
                             if area[i] != 0.0 {
                                 let my_xy = vec2(xy.x + f32(i), xy.y);
                                 var atlas_uv = image.matrx.xy * my_xy.x + image.matrx.zw * my_xy.y + image.xlat;
-                                atlas_uv.x = extend_mode(atlas_uv.x * extents_inv.x, image.x_extend_mode) * image.extents.x;
-                                atlas_uv.y = extend_mode(atlas_uv.y * extents_inv.y, image.y_extend_mode) * image.extents.y;
+                                atlas_uv.x = extend_mode2(atlas_uv.x, image.x_extend_mode, image.extents.x);
+                                atlas_uv.y = extend_mode2(atlas_uv.y, image.y_extend_mode, image.extents.y);
                                 atlas_uv = atlas_uv + image.atlas_offset - vec2(0.5);
                                 // TODO: If the image couldn't be added to the atlas (i.e. was too big), this isn't robust
                                 let atlas_uv_clamped = clamp(atlas_uv, image.atlas_offset, atlas_max);

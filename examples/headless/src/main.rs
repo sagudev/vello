@@ -31,7 +31,7 @@ fn main() -> Result<()> {
     #[cfg(not(target_arch = "wasm32"))]
     env_logger::init();
     let args = Args::parse();
-    let scenes = args.args.select_scene_set()?;
+    /*let scenes = args.args.select_scene_set()?;
     if let Some(scenes) = scenes {
         let mut scene_idx = None;
         for (idx, scene) in scenes.scenes.iter().enumerate() {
@@ -83,11 +83,12 @@ fn main() -> Result<()> {
             return Ok(());
         }
         pollster::block_on(render(scenes, scene_idx, &args))?;
-    }
+    }*/
+    pollster::block_on(render(&args))?;
     Ok(())
 }
 
-async fn render(mut scenes: SceneSet, index: usize, args: &Args) -> Result<()> {
+async fn render(args: &Args) -> Result<()> {
     let mut context = RenderContext::new();
     let device_id = context
         .device(None)
@@ -99,62 +100,27 @@ async fn render(mut scenes: SceneSet, index: usize, args: &Args) -> Result<()> {
     let mut renderer = vello::Renderer::new(
         device,
         RendererOptions {
-            use_cpu: args.use_cpu,
+            use_cpu: false,
             num_init_threads: NonZeroUsize::new(1),
-            antialiasing_support: vello::AaSupport::area_only(),
+            antialiasing_support: vello::AaSupport::all(),
             ..Default::default()
         },
     )
     .or_else(|_| bail!("Got non-Send/Sync error from creating renderer"))?;
-    let mut fragment = Scene::new();
-    let example_scene = &mut scenes.scenes[index];
-    let mut text = SimpleText::new();
     let mut images = ImageCache::new();
-    let mut scene_params = SceneParams {
-        time: args.time.unwrap_or(0.),
-        text: &mut text,
-        images: &mut images,
-        resolution: None,
-        base_color: None,
-        interactive: false,
-        complexity: 0,
-    };
-    example_scene
-        .function
-        .render(&mut fragment, &mut scene_params);
-    let mut transform = Affine::IDENTITY;
-    let (width, height) = if let Some(resolution) = scene_params.resolution {
-        let ratio = resolution.x / resolution.y;
-        let (new_width, new_height) = match (args.x_resolution, args.y_resolution) {
-            (None, None) => (resolution.x.ceil() as u32, resolution.y.ceil() as u32),
-            (None, Some(y)) => ((ratio * (y as f64)).ceil() as u32, y),
-            (Some(x), None) => (x, ((x as f64) / ratio).ceil() as u32),
-            (Some(x), Some(y)) => (x, y),
-        };
-        let factor = Vec2::new(new_width as f64, new_height as f64);
-        let scale_factor = (factor.x / resolution.x).min(factor.y / resolution.y);
-        transform *= Affine::scale(scale_factor);
-        (new_width, new_height)
-    } else {
-        match (args.x_resolution, args.y_resolution) {
-            (None, None) => (1000, 1000),
-            (None, Some(y)) => (y, y),
-            (Some(x), None) => (x, x),
-            (Some(x), Some(y)) => (x, y),
-        }
-    };
+    let (width, height) = (31, 31);
     let render_params = vello::RenderParams {
-        base_color: args
-            .args
-            .base_color
-            .or(scene_params.base_color)
-            .unwrap_or(palette::css::BLACK),
+        base_color: palette::css::BLACK,
         width,
         height,
         antialiasing_method: vello::AaConfig::Area,
     };
     let mut scene = Scene::new();
-    scene.append(&fragment, Some(transform));
+    let image = images
+        .from_file("/home/samo/Namizje/t.bmp")
+        .unwrap()
+        .with_quality(vello::peniko::ImageQuality::Low);
+    scene.draw_image(&image, Affine::IDENTITY);
     let size = Extent3d {
         width,
         height,
@@ -214,10 +180,7 @@ async fn render(mut scenes: SceneSet, index: usize, args: &Args) -> Result<()> {
         let start = (row * padded_byte_width).try_into()?;
         result_unpadded.extend(&data[start..start + (width * 4) as usize]);
     }
-    let out_path = args
-        .out_directory
-        .join(&example_scene.config.name)
-        .with_extension("png");
+    let out_path = args.out_directory.join("t").with_extension("png");
     let mut file = File::create(&out_path)?;
     let mut png_encoder = png::Encoder::new(&mut file, width, height);
     png_encoder.set_color(png::ColorType::Rgba);
