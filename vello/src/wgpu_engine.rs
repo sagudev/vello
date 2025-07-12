@@ -840,7 +840,10 @@ impl WgpuEngine {
                     label: Some(label),
                     source: wgpu::ShaderSource::Wgsl(wgsl),
                 },
-                wgpu::ShaderRuntimeChecks::unchecked(),
+                wgpu::ShaderRuntimeChecks {
+                    bounds_checks: true,
+                    force_loop_bounding: false,
+                },
             )
         };
         let bind_group_layout = device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
