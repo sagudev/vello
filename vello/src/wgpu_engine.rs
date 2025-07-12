@@ -841,8 +841,8 @@ impl WgpuEngine {
                     source: wgpu::ShaderSource::Wgsl(wgsl),
                 },
                 wgpu::ShaderRuntimeChecks {
-                    bounds_checks: true,
-                    force_loop_bounding: false,
+                    bounds_checks: false,
+                    force_loop_bounding: true,
                 },
             )
         };
