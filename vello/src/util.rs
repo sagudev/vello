@@ -157,6 +157,7 @@ impl RenderContext {
                 .ok()?;
         let features = adapter.features();
         let limits = Limits::default();
+        dbg!(adapter.get_info());
         let maybe_features = wgpu::Features::CLEAR_TEXTURE | wgpu::Features::PIPELINE_CACHE;
         #[cfg(feature = "wgpu-profiler")]
         let maybe_features = maybe_features | wgpu_profiler::GpuProfiler::ALL_WGPU_TIMER_FEATURES;
