@@ -137,7 +137,11 @@ impl Image {
                     format => unimplemented!("Unsupported image format: {format:?}"),
                 };
                 let alpha = ((u16::from(rgba[3]) * global_alpha) / 255) as u8;
-                let multiply = |component| ((u16::from(alpha) * u16::from(component)) / 255) as u8;
+                let color_multiplier = match brush.image.alpha_type {
+                    peniko::ImageAlphaType::Alpha => alpha as u16,
+                    peniko::ImageAlphaType::AlphaPremultiplied => global_alpha,
+                };
+                let multiply = |component| ((color_multiplier * u16::from(component)) / 255) as u8;
                 PremulRgba8 {
                     r: multiply(rgba[0]),
                     g: multiply(rgba[1]),
