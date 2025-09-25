@@ -102,9 +102,6 @@ impl Image {
     pub fn from_peniko_image(brush: &peniko::ImageBrush) -> Self {
         // TODO: how do we deal with `peniko::ImageFormat` growing? See also
         // <https://github.com/linebender/vello/pull/996#discussion_r2080510863>.
-        if brush.image.format != peniko::ImageFormat::Rgba8 {
-            unimplemented!("Unsupported image format: {:?}", brush.image.format);
-        }
         if brush.image.alpha_type != peniko::ImageAlphaType::Alpha {
             unimplemented!("Unsupported image alpha type: {:?}", brush.image.alpha_type);
         }
@@ -133,7 +130,12 @@ impl Image {
             .data
             .data()
             .chunks_exact(4)
-            .map(|rgba| {
+            .map(|pixel| {
+                let rgba: [u8; 4] = match brush.image.format {
+                    peniko::ImageFormat::Rgba8 => pixel.try_into().unwrap(),
+                    peniko::ImageFormat::Bgra8 => [pixel[2], pixel[1], pixel[0], pixel[3]],
+                    format => unimplemented!("Unsupported image format: {format:?}"),
+                };
                 let alpha = ((u16::from(rgba[3]) * global_alpha) / 255) as u8;
                 let multiply = |component| ((u16::from(alpha) * u16::from(component)) / 255) as u8;
                 PremulRgba8 {
